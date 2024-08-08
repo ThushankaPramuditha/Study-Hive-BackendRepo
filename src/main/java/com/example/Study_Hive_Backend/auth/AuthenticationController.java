@@ -2,6 +2,7 @@ package com.example.Study_Hive_Backend.auth;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,4 +27,11 @@ public class AuthenticationController {
         return ResponseEntity.ok(service.authenticate(request));
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout() {
+        // Perform any necessary cleanup here
+        return ResponseEntity.ok("Logout successful");
+    }
+
 }
+
