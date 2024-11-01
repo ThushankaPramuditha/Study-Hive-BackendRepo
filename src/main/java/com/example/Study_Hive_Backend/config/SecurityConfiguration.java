@@ -21,13 +21,13 @@ public class SecurityConfiguration {
     private final AuthenticationProvider authenticationProvider;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/api/profiles/**").authenticated()
-                        .requestMatchers("api/questions/**").permitAll()
+                        .requestMatchers("/api/profiles/**").permitAll()  // Allow access to /api/profiles without authentication
+                        .requestMatchers("/api/questions/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

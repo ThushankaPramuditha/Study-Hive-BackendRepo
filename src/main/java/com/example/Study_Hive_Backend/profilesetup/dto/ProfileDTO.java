@@ -1,19 +1,23 @@
 package com.example.Study_Hive_Backend.profilesetup.dto;
 
+import lombok.Getter;
+import lombok.Setter;
 
-import lombok.Data;
-
-@Data
+@Setter
+@Getter
 public class ProfileDTO {
-    private String firstName;
-    private String lastName;
-    private String gender;
-    private String university;
-    private String studyingFor;
-    private String levelOfKnowledge;
-    private String preferredLanguage;
-    private String preferredStudyTime;
-    private String studyGoal;
+    // Getters and Setters
     private String aboutMe;
+    private String gender;
+    private String adaptability;
+    private String preferredLanguages;
+    private String preferredStudyTime;
     private String profilePhotoUrl;
+    private String studyGoal;
+    private String studyingFor;
+    private String university;
+    private String username;
+
+    public String getPreferredLanguage() {return preferredLanguages;
+    }
 }
