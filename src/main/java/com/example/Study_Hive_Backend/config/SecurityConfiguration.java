@@ -28,6 +28,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/profiles/**").authenticated()
                         .requestMatchers("api/questions/**").permitAll()
+                        .requestMatchers("api/studyrooms/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
