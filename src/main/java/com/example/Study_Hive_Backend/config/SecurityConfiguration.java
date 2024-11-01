@@ -21,7 +21,7 @@ public class SecurityConfiguration {
     private final AuthenticationProvider authenticationProvider;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
@@ -29,6 +29,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/profiles/**").authenticated()
                         .requestMatchers("api/questions/**").permitAll()
                         .requestMatchers("api/studyrooms/**").permitAll()
+
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
