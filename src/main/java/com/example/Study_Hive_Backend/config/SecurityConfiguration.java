@@ -26,8 +26,10 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/api/profiles/**").permitAll()  // Allow access to /api/profiles without authentication
-                        .requestMatchers("/api/questions/**").permitAll()
+                        .requestMatchers("/api/profiles/**").authenticated()
+                        .requestMatchers("api/questions/**").permitAll()
+                        .requestMatchers("api/studyrooms/**").permitAll()
+
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

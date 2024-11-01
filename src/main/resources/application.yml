@@ -1,18 +1,42 @@
-#spring.application.name=Study-Hive
+# #spring.application.name=Study-Hive
 
+# spring:
+#   datasource:
+#     url: jdbc:postgresql://localhost:5432/studyhivedb
+#     username: postgres
+#     password: 12345678
+#     driver-class-name: org.postgresql.Driver
+#   jpa:
+#     hibernate:
+#       ddl-auto: update
+#     show-sql: true
+#     properties:
+#     datasource:
+#       url: jdbc:postgresql://localhost:5433/studyhivedb
+#       username: postgres
+#       password: 1234
+#       driver-class-name: org.postgresql.Driver
+#     jpa:
+#       hibernate:
+#         format_sql: true
+#     database: postgresql
+#     database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+# Application name
 spring:
-    datasource:
-      url: jdbc:postgresql://localhost:5433/studyhivedb
-      username: postgres
-      password: 1234
-      driver-class-name: org.postgresql.Driver
-    jpa:
-      hibernate:
-        ddl-auto: update
-      show-sql: true
-      properties:
-        hibernate:
-         format_sql: true
-      database: postgresql
-      database-platform: org.hibernate.dialect.PostgreSQLDialect
+  application:
+    name: Study-Hive
 
+  datasource:
+    url: jdbc:postgresql://localhost:5432/studyhivedb
+    username: postgres
+    password: 12345678
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      format_sql: true
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
