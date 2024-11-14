@@ -1,12 +1,15 @@
 package com.example.Study_Hive_Backend.profilesetup.repository;
 
 import com.example.Study_Hive_Backend.profilesetup.entity.Profile;
+import com.example.Study_Hive_Backend.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
-    // Custom query methods if needed
+    Optional<User> findByEmail(String email);
 }

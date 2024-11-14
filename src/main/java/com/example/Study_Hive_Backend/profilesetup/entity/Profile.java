@@ -29,8 +29,10 @@ public class Profile {
     private String university;
     private String profilePhotoUrl;
 
+
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id") // Ensure this is mapped correctly
     private User user;
+
 
 }

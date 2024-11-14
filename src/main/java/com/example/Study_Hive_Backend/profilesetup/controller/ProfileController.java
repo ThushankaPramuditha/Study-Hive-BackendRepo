@@ -12,10 +12,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/profiles")
 public class ProfileController {
 
+
+
     @Autowired
     private ProfileService profileService;
 
-    @PostMapping
+    public ProfileController(ProfileService profileService) {
+        this.profileService = profileService;
+    }
+
+
+    @PostMapping()
     public ResponseEntity<ProfileDTO> createProfile(@RequestBody ProfileDTO profileDTO) {
         ProfileDTO savedProfile = profileService.createProfile(profileDTO);
         return new ResponseEntity<>(savedProfile, HttpStatus.CREATED);
