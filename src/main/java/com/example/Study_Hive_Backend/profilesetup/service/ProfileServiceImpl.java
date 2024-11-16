@@ -101,8 +101,39 @@ public class ProfileServiceImpl implements ProfileService {
             return profileRepository.save(profile);
         }
 
+
         throw new RuntimeException("Profile not found");
     }
+
+    @Override
+    public ProfileDTO getProfileOfLoggedInUser() {
+        String loggedInEmail = SecurityContextHolder.getContext().getAuthentication().getName(); // Get the logged-in user's email
+
+        // Fetch the logged-in user
+        User loggedInUser = userRepository.findByEmail(loggedInEmail)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Fetch the profile using the logged-in user's ID
+        Profile profile = profileRepository.findByUserId(loggedInUser.getId())
+                .orElseThrow(() -> new RuntimeException("Profile not found"));
+
+        // Convert Profile entity to ProfileDTO (if necessary)
+        ProfileDTO profileDTO = new ProfileDTO();
+        profileDTO.setUsername(profile.getUsername());
+        profileDTO.setGender(profile.getGender());
+        profileDTO.setAdaptability(profile.getAdaptability());
+        profileDTO.setPreferredLanguages(profile.getPreferredLanguages());
+        profileDTO.setPreferredStudyTime(profile.getPreferredStudyTime());
+        profileDTO.setStudyGoal(profile.getStudyGoal());
+        profileDTO.setAboutMe(profile.getAboutMe());
+        profileDTO.setStudyingFor(profile.getStudyingFor());
+        profileDTO.setUniversity(profile.getUniversity());
+        profileDTO.setProfilePhotoUrl(profile.getProfilePhotoUrl());
+
+        return profileDTO;
+    }
+
+
 }
 
 

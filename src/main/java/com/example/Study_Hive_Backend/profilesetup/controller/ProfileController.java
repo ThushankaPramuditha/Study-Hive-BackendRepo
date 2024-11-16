@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/profiles")
 public class ProfileController {
@@ -34,18 +36,22 @@ public class ProfileController {
         return ResponseEntity.ok(profile);
     }
 
-    // Optionally, you can add a method to get a profile by ID if needed
-    @GetMapping("/{id}")
-    public ResponseEntity<Profile> getProfile(@PathVariable Long id) {
-        // Add a method in your ProfileService to fetch a profile by ID
-        // Example: Profile profile = profileService.getProfileById(id);
-        // return ResponseEntity.ok(profile);
-        return null;
-    }
 
     @PatchMapping("/{id}")
     public ResponseEntity<Profile> partiallyUpdateProfile(@PathVariable Long id, @RequestBody Profile partialUpdate) {
         Profile updatedProfile = profileService.updateProfile(id, partialUpdate);
         return ResponseEntity.ok(updatedProfile);
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<ProfileDTO> getLoggedInUserProfile() {
+        ProfileDTO profileDTO = profileService.getProfileOfLoggedInUser();
+        return ResponseEntity.ok(profileDTO);
+    }
+
+
+
+
+
+
 }
