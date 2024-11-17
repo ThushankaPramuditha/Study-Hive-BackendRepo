@@ -41,7 +41,12 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setAboutMe(profileDTO.getAboutMe());
         profile.setStudyingFor(profileDTO.getStudyingFor());
         profile.setUniversity(profileDTO.getUniversity());
-        profile.setProfilePhotoUrl(profileDTO.getProfilePhotoUrl());
+//        profile.setProfilePhotoUrl(profileDTO.getProfilePhotoUrl());
+
+        if (profile.getProfilePhotoUrl() != null && profile.getProfilePhotoUrl().length() > 2048) {
+//            logger.warn("Profile photo URL exceeds maximum length, truncating.");
+            profile.setProfilePhotoUrl(profile.getProfilePhotoUrl().substring(0, 2048));
+        }
 
         profile.setUser(loggedInUser);
 

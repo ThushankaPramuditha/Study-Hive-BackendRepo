@@ -27,6 +27,8 @@ public class Profile {
     private String aboutMe;
     private String studyingFor;
     private String university;
+
+    @Column(name = "profile_photo_url", length = 2048)
     private String profilePhotoUrl;
 
 

@@ -2,6 +2,7 @@ package com.example.Study_Hive_Backend.profilesetup.controller;
 
 import com.example.Study_Hive_Backend.profilesetup.dto.ProfileDTO;
 import com.example.Study_Hive_Backend.profilesetup.entity.Profile;
+import com.example.Study_Hive_Backend.profilesetup.repository.ProfileRepository;
 import com.example.Study_Hive_Backend.profilesetup.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,9 @@ import java.util.Optional;
 @RequestMapping("/api/profiles")
 public class ProfileController {
 
+
+    @Autowired
+    private ProfileRepository ProfileRepository;
 
 
     @Autowired
@@ -49,6 +53,11 @@ public class ProfileController {
         return ResponseEntity.ok(profileDTO);
     }
 
+    @GetMapping("/exists/{userId}")
+    public ResponseEntity<Boolean> checkProfileExists(@PathVariable Integer userId) {
+        boolean exists = ProfileRepository.existsByUserId(userId);
+        return ResponseEntity.ok(exists);
+    }
 
 
 
