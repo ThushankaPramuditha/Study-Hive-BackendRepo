@@ -145,4 +145,7 @@ public class User implements UserDetails {
         return UserDetails.super.isEnabled();
     }
 
+//    public String firstnameAndlastname() {
+//        return firstname +' ' + lastname;
+//    }
 }

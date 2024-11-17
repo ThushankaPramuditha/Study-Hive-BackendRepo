@@ -39,9 +39,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         jwt = authHeader.substring(7);
         userEmail = jwtService.extractUsername(jwt);
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-            if(jwtService.isTokenValid(jwt, userDetails)) {
+        UserDetails userDetails = null;
+        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+            if (jwtService.isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
@@ -55,5 +56,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
+
+        if (jwtService.isTokenValid(jwt, userDetails)) {
+            String fullName = jwtService.extractFullName(jwt);
+            System.out.println("Authenticated user full name: " + fullName);
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                    userDetails,
+                    null,
+                    userDetails.getAuthorities()
+            );
+            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+        }
+
     }
 }
