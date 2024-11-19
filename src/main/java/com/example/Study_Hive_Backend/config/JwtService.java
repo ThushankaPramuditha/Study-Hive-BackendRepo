@@ -108,6 +108,7 @@
 
 package com.example.Study_Hive_Backend.config;
 
+import com.example.Study_Hive_Backend.user.Role;
 import com.example.Study_Hive_Backend.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -143,6 +144,7 @@ public class JwtService {
 //    public String generateToken(UserDetails userDetails) {
 //        return generateToken(new HashMap<>(), userDetails);
 //    }
+
 
     public String generateToken(UserDetails userDetails) {
         if (userDetails instanceof User user) {

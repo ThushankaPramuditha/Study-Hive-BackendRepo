@@ -148,4 +148,5 @@ public class User implements UserDetails {
 //    public String firstnameAndlastname() {
 //        return firstname +' ' + lastname;
 //    }
+
 }
