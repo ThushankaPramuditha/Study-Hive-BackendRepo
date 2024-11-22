@@ -18,6 +18,8 @@ public class ProfileDTO {
     private String university;
     private String username;
 
-    public String getPreferredLanguage() {return preferredLanguages;
-    }
+
+
+
+
 }
