@@ -44,11 +44,15 @@ import com.example.Study_Hive_Backend.questions.dto.QuestionRequest;
 import com.example.Study_Hive_Backend.questions.dto.QuestionResponse;
 import com.example.Study_Hive_Backend.questions.entity.Question;
 import com.example.Study_Hive_Backend.questions.repository.QuestionRepository;
+import com.example.Study_Hive_Backend.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.example.Study_Hive_Backend.user.UserRepository;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @Service
 public class QuestionService {
@@ -56,10 +60,22 @@ public class QuestionService {
     @Autowired
     private QuestionRepository questionRepository;
 
-    public QuestionResponse createQuestion(QuestionRequest questionRequest) {
+    @Autowired
+    private UserRepository userRepository;
+
+    public String getUserFullNameFromEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(user -> user.getFirstname() + " " + user.getLastname())
+                .orElse("Unknown User");
+    }
+
+    public QuestionResponse createQuestion(QuestionRequest questionRequest, String userEmail) {
+        // Retrieve the user by ID
         Question question = new Question();
         question.setContent(questionRequest.getContent());
         question.setCategory(questionRequest.getCategory());
+        question.setAuthorEmail(userEmail); // Set the author
+
         questionRepository.save(question);
         return mapToResponse(question);
     }
@@ -75,6 +91,10 @@ public class QuestionService {
         questionResponse.setId(question.getId());
         questionResponse.setContent(question.getContent());
         questionResponse.setCategory(question.getCategory());
+        questionResponse.setAuthorEmail(question.getAuthorEmail());
+        questionResponse.setAuthorFullName(getUserFullNameFromEmail(question.getAuthorEmail())); // Set full name
         return questionResponse;
     }
+
+
 }
