@@ -7,4 +7,6 @@ public class QuestionRequest {
     private String title;
     private String content;
     private String category;
+
+
 }

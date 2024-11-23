@@ -30,6 +30,10 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/api/profiles/me").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/profiles/**").authenticated() // Allow access to /api/profiles without authentication
                         .requestMatchers("/api/questions/**").permitAll()
+                        .requestMatchers("/api/profiles/**").authenticated()
+//                         .requestMatchers("api/questions/**").permitAll()
+                        .requestMatchers("api/studyrooms/**").permitAll()
+
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
