@@ -11,5 +11,7 @@ import java.util.List;
 public interface ProfileService {
     ProfileDTO createProfile(ProfileDTO profileDTO);
     ProfileDTO getProfileOfLoggedInUser();
-    Profile updateProfile(Long id, Profile updatedProfile);
+   // Profile updateProfile(Long id, Profile updatedProfile);
+//   Profile updateProfile(Integer userId, Profile updatedProfile);
+   ProfileDTO updateProfile(String loggedInEmail, ProfileDTO profileDTO);
 }

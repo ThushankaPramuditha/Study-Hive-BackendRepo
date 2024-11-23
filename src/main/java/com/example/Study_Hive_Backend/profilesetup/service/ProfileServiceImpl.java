@@ -55,59 +55,117 @@ public class ProfileServiceImpl implements ProfileService {
         return profileDTO;
     }
 
+//    @Override
+//    public Profile updateProfile(Long id, Profile updatedProfile) {
+//        Optional<Profile> profileOpt = profileRepository.findById(id);
+//
+//        if (profileOpt.isPresent()) {
+//            Profile profile = profileOpt.get();
+//
+//            // Only update fields that are not null in updatedProfile
+//            if (updatedProfile.getUsername() != null) {
+//                profile.setUsername(updatedProfile.getUsername());
+//            }
+//            if (updatedProfile.getEmail() != null) {
+//                profile.setEmail(updatedProfile.getEmail());
+//            }
+//            if (updatedProfile.getPhoneNumber() != null) {
+//                profile.setPhoneNumber(updatedProfile.getPhoneNumber());
+//            }
+//            if (updatedProfile.getEmergencyContact() != null) {
+//                profile.setEmergencyContact(updatedProfile.getEmergencyContact());
+//            }
+//            if (updatedProfile.getGender() != null) {
+//                profile.setGender(updatedProfile.getGender());
+//            }
+//            if (updatedProfile.getAdaptability() != null) {
+//                profile.setAdaptability(updatedProfile.getAdaptability());
+//            }
+//            if (updatedProfile.getPreferredLanguages() != null) {
+//                profile.setPreferredLanguages(updatedProfile.getPreferredLanguages());
+//            }
+//            if (updatedProfile.getPreferredStudyTime() != null) {
+//                profile.setPreferredStudyTime(updatedProfile.getPreferredStudyTime());
+//            }
+//            if (updatedProfile.getStudyGoal() != null) {
+//                profile.setStudyGoal(updatedProfile.getStudyGoal());
+//            }
+//            if (updatedProfile.getAboutMe() != null) {
+//                profile.setAboutMe(updatedProfile.getAboutMe());
+//            }
+//            if (updatedProfile.getStudyingFor() != null) {
+//                profile.setStudyingFor(updatedProfile.getStudyingFor());
+//            }
+//            if (updatedProfile.getUniversity() != null) {
+//                profile.setUniversity(updatedProfile.getUniversity());
+//            }
+//            if (updatedProfile.getProfilePhotoUrl() != null) {
+//                profile.setProfilePhotoUrl(updatedProfile.getProfilePhotoUrl());
+//            }
+//
+//            return profileRepository.save(profile);
+//        }
+//
+//
+//        throw new RuntimeException("Profile not found");
+//    }
+
+//    @Override
+//    public Profile updateProfile(Integer userId, Profile updatedProfile) {
+//        // Fetch the profile by user_id
+//        Optional<Profile> optionalProfile = profileRepository.findByUserId(userId);
+//        if (optionalProfile.isEmpty()) {
+//            throw new RuntimeException("Profile not found for user ID: " + userId);
+//        }
+//
+//        // Get the profile from the Optional
+//        Profile profile = optionalProfile.get();
+//
+//        // Update the fields with the new values
+//        profile.setUsername(updatedProfile.getUsername());
+//        profile.setEmail(updatedProfile.getEmail());
+//        profile.setPhoneNumber(updatedProfile.getPhoneNumber());
+//        profile.setEmergencyContact(updatedProfile.getEmergencyContact());
+//        profile.setGender(updatedProfile.getGender());
+//        profile.setAdaptability(updatedProfile.getAdaptability());
+//        profile.setPreferredLanguages(updatedProfile.getPreferredLanguages());
+//        profile.setPreferredStudyTime(updatedProfile.getPreferredStudyTime());
+//        profile.setStudyGoal(updatedProfile.getStudyGoal());
+//        profile.setAboutMe(updatedProfile.getAboutMe());
+//        profile.setStudyingFor(updatedProfile.getStudyingFor());
+//        profile.setUniversity(updatedProfile.getUniversity());
+//        profile.setProfilePhotoUrl(updatedProfile.getProfilePhotoUrl());
+//        return profileRepository.save(profile);
+//    }
+
     @Override
-    public Profile updateProfile(Long id, Profile updatedProfile) {
-        Optional<Profile> profileOpt = profileRepository.findById(id);
+    public ProfileDTO updateProfile(String loggedInEmail, ProfileDTO profileDTO) {
+        // Find the user based on their email
+        User user = userRepository.findByEmail(loggedInEmail)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (profileOpt.isPresent()) {
-            Profile profile = profileOpt.get();
+        // Find the user's profile based on the user ID
+        Profile profile = profileRepository.findByUserId(user.getId())
+                .orElseThrow(() -> new RuntimeException("Profile not found"));
 
-            // Only update fields that are not null in updatedProfile
-            if (updatedProfile.getUsername() != null) {
-                profile.setUsername(updatedProfile.getUsername());
-            }
-            if (updatedProfile.getEmail() != null) {
-                profile.setEmail(updatedProfile.getEmail());
-            }
-            if (updatedProfile.getPhoneNumber() != null) {
-                profile.setPhoneNumber(updatedProfile.getPhoneNumber());
-            }
-            if (updatedProfile.getEmergencyContact() != null) {
-                profile.setEmergencyContact(updatedProfile.getEmergencyContact());
-            }
-            if (updatedProfile.getGender() != null) {
-                profile.setGender(updatedProfile.getGender());
-            }
-            if (updatedProfile.getAdaptability() != null) {
-                profile.setAdaptability(updatedProfile.getAdaptability());
-            }
-            if (updatedProfile.getPreferredLanguages() != null) {
-                profile.setPreferredLanguages(updatedProfile.getPreferredLanguages());
-            }
-            if (updatedProfile.getPreferredStudyTime() != null) {
-                profile.setPreferredStudyTime(updatedProfile.getPreferredStudyTime());
-            }
-            if (updatedProfile.getStudyGoal() != null) {
-                profile.setStudyGoal(updatedProfile.getStudyGoal());
-            }
-            if (updatedProfile.getAboutMe() != null) {
-                profile.setAboutMe(updatedProfile.getAboutMe());
-            }
-            if (updatedProfile.getStudyingFor() != null) {
-                profile.setStudyingFor(updatedProfile.getStudyingFor());
-            }
-            if (updatedProfile.getUniversity() != null) {
-                profile.setUniversity(updatedProfile.getUniversity());
-            }
-            if (updatedProfile.getProfilePhotoUrl() != null) {
-                profile.setProfilePhotoUrl(updatedProfile.getProfilePhotoUrl());
-            }
+        // Update profile fields
+        profile.setUsername(profileDTO.getUsername());
+        profile.setGender(profileDTO.getGender());
+        profile.setUniversity(profileDTO.getUniversity());
+        profile.setStudyingFor(profileDTO.getStudyingFor());
+        profile.setAdaptability(profileDTO.getAdaptability());
+        profile.setPreferredLanguages(profileDTO.getPreferredLanguages());
+        profile.setStudyGoal(profileDTO.getStudyGoal());
+        profile.setAboutMe(profileDTO.getAboutMe());
+        profile.setPhoneNumber(profileDTO.getPhoneNumber());
+        profile.setEmergencyContact(profileDTO.getEmergencyContact());
+        ;
 
-            return profileRepository.save(profile);
-        }
+        // Save the updated profile
+        Profile updatedProfile = profileRepository.save(profile);
 
-
-        throw new RuntimeException("Profile not found");
+        // Convert the updated profile to a DTO and return it
+        return new ProfileDTO(updatedProfile);
     }
 
     @Override
@@ -124,6 +182,7 @@ public class ProfileServiceImpl implements ProfileService {
 
         // Convert Profile entity to ProfileDTO (if necessary)
         ProfileDTO profileDTO = new ProfileDTO();
+        profileDTO.setUserId(profile.getUser().getId());
         profileDTO.setUsername(profile.getUsername());
         profileDTO.setGender(profile.getGender());
         profileDTO.setAdaptability(profile.getAdaptability());

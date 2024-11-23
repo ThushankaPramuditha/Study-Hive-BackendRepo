@@ -1,6 +1,7 @@
 package com.example.Study_Hive_Backend.profilesetup.entity;
 
 import com.example.Study_Hive_Backend.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,7 +35,9 @@ public class Profile {
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id") // Ensure this is mapped correctly
+    @JsonIgnore
     private User user;
 
+    
 
 }
