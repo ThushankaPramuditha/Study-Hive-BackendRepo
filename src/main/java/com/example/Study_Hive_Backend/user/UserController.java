@@ -15,4 +15,9 @@ public class UserController {
         return userService.getUserByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
     }
+
+//    @GetMapping("/{id}")
+//    public User getUserById(@PathVariable Integer id) {
+//        return userService.getUserById(id);
+//    }
 }
