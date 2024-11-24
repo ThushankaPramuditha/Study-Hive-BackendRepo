@@ -7,11 +7,19 @@ import com.example.Study_Hive_Backend.profilesetup.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProfileServiceImpl implements ProfileService {
 
     @Autowired
     private ProfileRepository profileRepository;
+    private final MatchingService matchingService;
+
+    public ProfileServiceImpl(ProfileRepository profileRepository, MatchingService matchingService) {
+        this.profileRepository = profileRepository;
+        this.matchingService = matchingService;
+    }
 
     @Override
     public ProfileDTO createProfile(ProfileDTO profileDTO) {
@@ -31,4 +39,10 @@ public class ProfileServiceImpl implements ProfileService {
 
         return profileDTO;  // Return the saved profile as a DTO
     }
+
+    @Override
+    public List<ProfileDTO> findMatchingPartners(ProfileDTO profileDTO) {
+        return matchingService.findMatchingPartners(profileDTO);
+    }
 }
+

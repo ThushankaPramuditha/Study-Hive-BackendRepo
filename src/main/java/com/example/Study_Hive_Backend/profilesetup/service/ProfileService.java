@@ -10,4 +10,5 @@ import java.util.List;
 
 public interface ProfileService {
     ProfileDTO createProfile(ProfileDTO profileDTO);
+    List<ProfileDTO> findMatchingPartners(ProfileDTO profileDTO);
 }
