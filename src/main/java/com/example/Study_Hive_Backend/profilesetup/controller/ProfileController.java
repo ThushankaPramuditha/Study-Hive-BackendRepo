@@ -7,8 +7,12 @@ import com.example.Study_Hive_Backend.profilesetup.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -34,18 +38,27 @@ public class ProfileController {
         return new ResponseEntity<>(savedProfile, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Profile> updateProfile(@PathVariable Long id, @RequestBody Profile updatedProfile) {
-        Profile profile = profileService.updateProfile(id, updatedProfile);
-        return ResponseEntity.ok(profile);
-    }
+//    @PutMapping("/api/profiles/{id}")
+//    public ResponseEntity<?> updateProfile(@PathVariable("userId") Integer userId, @RequestBody Profile updatedProfile) {
+//        if (userId == null || userId <= 0) {
+//            return ResponseEntity.badRequest().body("Invalid userId");
+//        }
+//
+//        try {
+//            Profile profile = profileService.updateProfile(userId, updatedProfile);
+//            return ResponseEntity.ok(profile);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating profile");
+//        }
+//    }
 
-
-    @PatchMapping("/{id}")
-    public ResponseEntity<Profile> partiallyUpdateProfile(@PathVariable Long id, @RequestBody Profile partialUpdate) {
-        Profile updatedProfile = profileService.updateProfile(id, partialUpdate);
+    @PutMapping("/me")
+    public ResponseEntity<ProfileDTO> updateProfile(@RequestBody ProfileDTO profileDTO, Authentication authentication) {
+        String loggedInEmail = authentication.getName(); // Get the logged-in user's email
+        ProfileDTO updatedProfile = profileService.updateProfile(loggedInEmail, profileDTO);
         return ResponseEntity.ok(updatedProfile);
     }
+
 
     @GetMapping("/me")
     public ResponseEntity<ProfileDTO> getLoggedInUserProfile() {
