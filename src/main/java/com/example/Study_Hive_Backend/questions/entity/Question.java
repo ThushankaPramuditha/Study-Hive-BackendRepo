@@ -3,6 +3,8 @@ import com.example.Study_Hive_Backend.comments.entity.Comment;
 import com.example.Study_Hive_Backend.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -18,5 +20,8 @@ public class Question {
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private List<Comment> comments;
+
+    @Column(name = "created_date", updatable = false)
+    private LocalDateTime createdDate;
 
 }
