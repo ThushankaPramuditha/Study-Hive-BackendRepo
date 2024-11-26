@@ -76,6 +76,7 @@
 
 package com.example.Study_Hive_Backend.user;
 
+import com.example.Study_Hive_Backend.profilesetup.entity.Profile;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -101,6 +102,7 @@ public class User implements UserDetails {
     private Integer id;
     private String firstname;
     private String lastname;
+    @Column(nullable = false, unique = true)
     private String email;
     private String password;
 
@@ -145,8 +147,11 @@ public class User implements UserDetails {
         return UserDetails.super.isEnabled();
     }
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Profile profile;
+
+
 //    public String firstnameAndlastname() {
 //        return firstname +' ' + lastname;
 //    }
-
 }

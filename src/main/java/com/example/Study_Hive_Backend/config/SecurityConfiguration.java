@@ -4,6 +4,7 @@ import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -26,8 +27,13 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/profiles/**").permitAll()
+                     
+                        .requestMatchers(HttpMethod.GET, "/api/profiles/me").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/profiles/**").authenticated() // Allow access to /api/profiles without authentication
+                        .requestMatchers("/api/questions/**").permitAll()
                         .requestMatchers("/api/profiles/**").authenticated()
-                        .requestMatchers("api/questions/**").permitAll()
+//                         .requestMatchers("api/questions/**").permitAll()
                         .requestMatchers("api/studyrooms/**").permitAll()
 
                         .anyRequest().authenticated()

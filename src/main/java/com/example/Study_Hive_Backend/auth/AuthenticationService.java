@@ -1,6 +1,7 @@
 package com.example.Study_Hive_Backend.auth;
 
 import com.example.Study_Hive_Backend.config.JwtService;
+import com.example.Study_Hive_Backend.profilesetup.repository.ProfileRepository;
 import com.example.Study_Hive_Backend.user.Role;
 import com.example.Study_Hive_Backend.user.Status;
 import com.example.Study_Hive_Backend.user.User;
@@ -20,6 +21,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final ProfileRepository ProfileRepository;
 
     public AuthenticationResponse register(RegisterRequest request) {
         if (repository.findByEmail(request.getEmail()).isPresent()) {
@@ -50,14 +52,18 @@ public class AuthenticationService {
         );
         var user = repository.findByEmail(request.getEmail())
                 .orElseThrow();
+
+        boolean profileExists = ProfileRepository.findByUserId(user.getId()).isPresent();
+      
         // Update status to ACTIVE
         user.setStatus(Status.ACTIVE);
         repository.save(user);
-
-
+      
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .userId(user.getId())  // Include user ID in the response
+                .profileExists(profileExists)
                 .build();
     }
 
