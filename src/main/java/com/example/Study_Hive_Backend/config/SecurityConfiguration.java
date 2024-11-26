@@ -27,6 +27,8 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/profiles/**").permitAll()
+                     
                         .requestMatchers(HttpMethod.GET, "/api/profiles/me").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/profiles/**").authenticated() // Allow access to /api/profiles without authentication
                         .requestMatchers("/api/questions/**").permitAll()

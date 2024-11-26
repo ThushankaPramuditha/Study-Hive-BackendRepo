@@ -12,8 +12,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+
+import java.util.List;
+
 import java.util.Map;
 import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/api/profiles")
@@ -37,6 +41,11 @@ public class ProfileController {
         ProfileDTO savedProfile = profileService.createProfile(profileDTO);
         return new ResponseEntity<>(savedProfile, HttpStatus.CREATED);
     }
+    @PostMapping("/match")
+    public List<ProfileDTO> findMatchingPartners(@RequestBody ProfileDTO profileDTO) {
+        return profileService.findMatchingPartners(profileDTO);
+    }
+
 
 //    @PutMapping("/api/profiles/{id}")
 //    public ResponseEntity<?> updateProfile(@PathVariable("userId") Integer userId, @RequestBody Profile updatedProfile) {
@@ -71,8 +80,6 @@ public class ProfileController {
         boolean exists = ProfileRepository.existsByUserId(userId);
         return ResponseEntity.ok(exists);
     }
-
-
 
 
 

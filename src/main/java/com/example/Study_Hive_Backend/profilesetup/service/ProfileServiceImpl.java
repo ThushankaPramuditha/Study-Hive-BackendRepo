@@ -10,13 +10,23 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+
+import java.util.List;
+
 import java.util.Optional;
+
 
 @Service
 public class ProfileServiceImpl implements ProfileService {
 
     @Autowired
     private ProfileRepository profileRepository;
+    private final MatchingService matchingService;
+
+    public ProfileServiceImpl(ProfileRepository profileRepository, MatchingService matchingService) {
+        this.profileRepository = profileRepository;
+        this.matchingService = matchingService;
+    }
 
     @Autowired
     private UserRepository userRepository;
@@ -55,6 +65,11 @@ public class ProfileServiceImpl implements ProfileService {
         return profileDTO;
     }
 
+    @Override
+    public List<ProfileDTO> findMatchingPartners(ProfileDTO profileDTO) {
+        return matchingService.findMatchingPartners(profileDTO);
+    }
+}
 //    @Override
 //    public Profile updateProfile(Long id, Profile updatedProfile) {
 //        Optional<Profile> profileOpt = profileRepository.findById(id);
