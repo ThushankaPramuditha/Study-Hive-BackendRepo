@@ -108,6 +108,8 @@
 
 package com.example.Study_Hive_Backend.config;
 
+import com.example.Study_Hive_Backend.user.Role;
+import com.example.Study_Hive_Backend.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -132,13 +134,37 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
+
+
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
+//    public String generateToken(UserDetails userDetails) {
+//        return generateToken(new HashMap<>(), userDetails);
+//    }
+
+
     public String generateToken(UserDetails userDetails) {
+        if (userDetails instanceof User user) {
+            Map<String, Object> claims = new HashMap<>();
+            claims.put("firstname", user.getFirstname());
+            claims.put("lastname", user.getLastname());
+            return generateToken(claims, userDetails);
+        }
         return generateToken(new HashMap<>(), userDetails);
+    }
+
+    public String extractFullName(String token) {
+        String firstname = extractClaim(token, claims -> claims.get("firstname", String.class));
+        String lastname = extractClaim(token, claims -> claims.get("lastname", String.class));
+        return firstname + " " + lastname;
+    }
+
+    public Integer extractUserId(String token) {
+        System.out.println("Extracted user id: " + extractUserId(token));
+        return extractClaim(token, claims -> claims.get("userId", Integer.class));
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {

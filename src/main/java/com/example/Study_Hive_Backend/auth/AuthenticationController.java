@@ -34,4 +34,6 @@ public class AuthenticationController {
     public ResponseEntity<?> logout() {
         return ResponseEntity.ok("Logout successful");
     }
+
+
 }
