@@ -190,5 +190,10 @@ public class StudyRoomController {
             return new ResponseEntity<>("Internal server error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/user/{userId}")
+    public List<StudyRoomEntity> getStudyRoomsByUserId(@PathVariable Integer userId) {
+        return studyRoomService.getStudyRoomsByUserId(userId);
+    }
 }
 

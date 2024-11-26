@@ -6,9 +6,11 @@ import com.example.Study_Hive_Backend.studyroom.repository.StudyRoomParticipantR
 import com.example.Study_Hive_Backend.studyroom.repository.StudyRoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class StudyRoomService {
@@ -36,6 +38,22 @@ public class StudyRoomService {
 
     public List<StudyRoomEntity> getAllStudyRooms() {
         return studyRoomRepository.findAll();
+    }
+
+
+    public List<StudyRoomEntity> getStudyRoomsByUserId(Integer userId) {
+        // Get rooms owned by the user
+        List<StudyRoomEntity> ownedRooms = studyRoomRepository.findByOwnerId(userId);
+
+        // Get rooms where the user is a participant with ACCEPTED status
+        List<StudyRoomEntity> participantRooms = studyRoomParticipantRepository.findByUserIdAndStatus(userId, StudyRoomParticipantEntity.ParticipantStatus.ACCEPTED)
+                .stream()
+                .map(StudyRoomParticipantEntity::getStudyRoom)
+                .toList();
+
+        // Combine and return the unique list of rooms
+        ownedRooms.addAll(participantRooms);
+        return ownedRooms.stream().distinct().collect(Collectors.toList());
     }
 
     public boolean deleteStudyRoom(Long id) {
