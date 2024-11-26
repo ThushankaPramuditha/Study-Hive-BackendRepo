@@ -34,4 +34,5 @@ public class UserController {
         boolean isRegistered = userRepository.existsByEmail(email.toLowerCase());
         return ResponseEntity.ok(Map.of("isValid", true, "isRegistered", isRegistered));
     }
+
 }
