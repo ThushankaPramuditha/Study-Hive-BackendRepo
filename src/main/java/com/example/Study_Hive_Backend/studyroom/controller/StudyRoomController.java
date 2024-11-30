@@ -163,17 +163,17 @@ public class StudyRoomController {
         }
     }
 
-    @PostMapping("/join-request/{requestId}/accept")
-    public ResponseEntity<?> acceptJoinRequest(@PathVariable Long requestId) {
-        try {
-            StudyRoomParticipantEntity acceptedRequest = studyRoomService.acceptJoinRequest(requestId);
-            return ResponseEntity.ok(acceptedRequest);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>("Error accepting join request: " + e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Internal server error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @PostMapping("/join-request/{requestId}/accept")
+//    public ResponseEntity<?> acceptJoinRequest(@PathVariable Long requestId) {
+//        try {
+//            StudyRoomParticipantEntity acceptedRequest = studyRoomService.acceptJoinRequest(requestId);
+//            return ResponseEntity.ok(acceptedRequest);
+//        } catch (IllegalArgumentException e) {
+//            return new ResponseEntity<>("Error accepting join request: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>("Internal server error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
     @PostMapping("/{studyRoomId}/join")
     public ResponseEntity<?> joinStudyRoom(@PathVariable Long studyRoomId,
@@ -194,6 +194,27 @@ public class StudyRoomController {
     @GetMapping("/user/{userId}")
     public List<StudyRoomEntity> getStudyRoomsByUserId(@PathVariable Integer userId) {
         return studyRoomService.getStudyRoomsByUserId(userId);
+    }
+    @GetMapping("/{roomId}/accepted-users")
+    public ResponseEntity<?> getAcceptedUsers(@PathVariable Long roomId) {
+        try {
+            List<StudyRoomParticipantEntity> acceptedUsers = studyRoomService.getAcceptedUsers(roomId);
+            return new ResponseEntity<>(acceptedUsers, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error retrieving accepted users: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/{roomId}/leave")
+    public ResponseEntity<?> leaveRoom(@PathVariable Long roomId, @RequestParam Integer userId, @RequestParam Long timeSpent) {
+        try {
+            studyRoomService.leaveRoom(roomId, userId, timeSpent);
+            return new ResponseEntity<>("Successfully left the room", HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error leaving room: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
 

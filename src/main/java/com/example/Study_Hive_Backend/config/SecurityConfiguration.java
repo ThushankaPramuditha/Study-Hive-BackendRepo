@@ -29,7 +29,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/profiles/**").authenticated()
                         .requestMatchers("api/questions/**").permitAll()
                         .requestMatchers("api/studyrooms/**").permitAll()
-
+                        .requestMatchers("api/statistics/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
