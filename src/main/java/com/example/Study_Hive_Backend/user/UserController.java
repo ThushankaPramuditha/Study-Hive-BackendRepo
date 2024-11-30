@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -34,4 +35,11 @@ public class UserController {
         boolean isRegistered = userRepository.existsByEmail(email.toLowerCase());
         return ResponseEntity.ok(Map.of("isValid", true, "isRegistered", isRegistered));
     }
+
+    @GetMapping
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return ResponseEntity.ok(users);
+    }
+
 }
