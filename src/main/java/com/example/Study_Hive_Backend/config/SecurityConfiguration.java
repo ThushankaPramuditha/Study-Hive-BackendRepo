@@ -33,7 +33,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/profiles/**").authenticated()
 //                         .requestMatchers("api/questions/**").permitAll()
                         .requestMatchers("api/studyrooms/**").permitAll()
-                                .requestMatchers("/api/v1/users").permitAll()
+                                .requestMatchers("/api/v1/users/**").permitAll()
 
                         .anyRequest().authenticated()
                 )

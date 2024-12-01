@@ -25,5 +25,15 @@ public class UserService {
         return userRepository.existsByEmail(email);
     }
 
+    public void deleteUser(Integer userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            userRepository.delete(user.get());
+        } else {
+            throw new RuntimeException("User not found with id: " + userId);
+        }
+    }
+
+
 }
 

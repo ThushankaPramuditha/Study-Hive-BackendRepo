@@ -77,6 +77,7 @@
 package com.example.Study_Hive_Backend.user;
 
 import com.example.Study_Hive_Backend.profilesetup.entity.Profile;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -86,6 +87,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -154,4 +156,9 @@ public class User implements UserDetails {
 //    public String firstnameAndlastname() {
 //        return firstname +' ' + lastname;
 //    }
+
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+    private LocalDateTime created_date;
+
 }
