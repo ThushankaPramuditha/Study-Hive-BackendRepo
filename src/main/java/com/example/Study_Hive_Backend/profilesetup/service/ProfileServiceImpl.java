@@ -198,6 +198,17 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
 
+    @Override
+    public ProfileDTO getProfileByUserId(Integer userId) {
+        // Fetch the profile by user ID
+        Profile profile = profileRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Profile not found for user ID: " + userId));
+
+        // Convert the Profile entity to a DTO
+        return new ProfileDTO(profile);
+    }
+
+
 }
 
 
