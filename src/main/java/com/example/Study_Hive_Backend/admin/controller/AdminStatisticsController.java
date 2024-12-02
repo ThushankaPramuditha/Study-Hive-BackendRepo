@@ -1,6 +1,6 @@
 package com.example.Study_Hive_Backend.admin.controller;
 
-import com.example.Study_Hive_Backend.admin.dto.ReportData;
+//import com.example.Study_Hive_Backend.admin.dto.ReportData;
 import com.example.Study_Hive_Backend.admin.dto.StatisticsResponse;
 import com.example.Study_Hive_Backend.admin.service.AdminService;
 import com.example.Study_Hive_Backend.questions.repository.QuestionRepository;
