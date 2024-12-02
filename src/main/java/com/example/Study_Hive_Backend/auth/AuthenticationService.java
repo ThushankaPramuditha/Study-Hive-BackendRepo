@@ -10,9 +10,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +27,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final ProfileRepository ProfileRepository;
+    private final UserRepository userRepository;
 
     public AuthenticationResponse register(RegisterRequest request) {
         if (repository.findByEmail(request.getEmail()).isPresent()) {
@@ -54,11 +60,14 @@ public class AuthenticationService {
                 .orElseThrow();
 
         boolean profileExists = ProfileRepository.findByUserId(user.getId()).isPresent();
-      
+
+        if (user.getBlocked()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Your account is blocked. Please contact support.");
+        }
         // Update status to ACTIVE
         user.setStatus(Status.ACTIVE);
         repository.save(user);
-      
+
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
@@ -77,5 +86,23 @@ public class AuthenticationService {
 
 
     }
-}
 
+
+    public User getCurrentUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            // Extract email from the UserDetails object
+            UserDetails userDetails = (UserDetails) principal;
+            String email = userDetails.getUsername();  // In Spring Security, the username is typically the email
+
+            // Retrieve user by email from the database (handles Optional)
+            Optional<User> userOptional = userRepository.findByEmail(email);
+
+            // If user is present, return the user, else return null or handle the case accordingly
+            return userOptional.orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+        }
+
+        throw new RuntimeException("Authentication error: no principal found");
+    }
+}

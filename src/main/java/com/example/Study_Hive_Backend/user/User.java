@@ -77,7 +77,6 @@
 package com.example.Study_Hive_Backend.user;
 
 import com.example.Study_Hive_Backend.profilesetup.entity.Profile;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -87,6 +86,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -108,11 +108,30 @@ public class User implements UserDetails {
     private String email;
     private String password;
 
+    @Column(name = "created_date", updatable = false)
+    private LocalDateTime createdDate;
+
+
+
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @Enumerated(EnumType.STRING)
     private Status status; // New status field
+
+    @Column(name = "blocked", nullable = false)
+    private Boolean blocked = false;
+
+    @Column(name = "block_count", nullable = false)
+    private Integer blockCount = 0;
+
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdDate = LocalDateTime.now();
+        System.out.println("Setting createdDate to: " + createdDate);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -153,12 +172,29 @@ public class User implements UserDetails {
     private Profile profile;
 
 
+    public Boolean getBlocked() {
+        return blocked;
+    }
+
+
+
+    public Integer getBlockCount() {
+        return blockCount;
+    }
+
+    public void setBlockCount(Integer blockCount) {
+        this.blockCount = blockCount;
+    }
+
+    public void setBlocked(Boolean blocked) {
+        if (!this.blocked && blocked) { // Increment only if changing from unblocked to blocked
+            this.blockCount++;
+        }
+        this.blocked = blocked;
+    }
+
+
 //    public String firstnameAndlastname() {
 //        return firstname +' ' + lastname;
 //    }
-
-
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
-    private LocalDateTime created_date;
-
 }

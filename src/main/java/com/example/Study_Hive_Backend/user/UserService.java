@@ -2,8 +2,11 @@ package com.example.Study_Hive_Backend.user;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.attribute.UserPrincipal;
 import java.util.Optional;
 
 @Service
@@ -25,6 +28,7 @@ public class UserService {
         return userRepository.existsByEmail(email);
     }
 
+
     public void deleteUser(Integer userId) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
@@ -36,4 +40,3 @@ public class UserService {
 
 
 }
-
