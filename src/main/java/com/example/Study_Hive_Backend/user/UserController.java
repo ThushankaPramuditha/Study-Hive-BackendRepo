@@ -46,55 +46,17 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public ResponseEntity<String> deleteUser(@PathVariable Integer userId) {
         try {
-            userService.deleteUser(userId);
+            // Delete the user from the _user table
+            userService.deleteUserById(userId);
+
+            userService.deleteProfileByUserId(userId);
             return ResponseEntity.ok("User deleted successfully");
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
-//    @PutMapping("/{userId}/block")
-//    public ResponseEntity<String> blockUser(@PathVariable Integer userId, @RequestParam boolean block) {
-//        Optional<User> optionalUser = userRepository.findById(userId);
-//        if (optionalUser.isEmpty()) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-//        }
-//
-//        User user = optionalUser.get();
-//        user.setBlocked(block);
-//
-//        // Increment block_count only when blocking
-//        if (block) {
-//            user.setBlockCount(user.getBlockCount() + 1);
-//        }
-//
-//        userRepository.save(user);
-//        return ResponseEntity.ok(block ? "User blocked" : "User unblocked");
-//    }
 
-    //    @PutMapping("/{userId}/block")
-//    public ResponseEntity<String> blockUser(@PathVariable Integer userId, @RequestBody Map<String, Boolean> blockRequest) {
-//        Optional<User> optionalUser = userRepository.findById(userId);
-//        if (optionalUser.isEmpty()) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-//        }
-//
-//        User user = optionalUser.get();
-//        Boolean block = blockRequest.get("blocked");
-//
-//        if (block == null) {
-//            return ResponseEntity.badRequest().body("Block status is required");
-//        }
-//
-//        user.setBlocked(block);
-//
-//        if (block) {
-//            user.setBlockCount(user.getBlockCount() + 1);
-//        }
-//
-//        userRepository.save(user);
-//        return ResponseEntity.ok(block ? "User blocked" : "User unblocked");
-//    }
     @PutMapping("/{userId}/block")
     public ResponseEntity<String> blockUser(@PathVariable Integer userId, @RequestBody Map<String, Boolean> blockRequest) {
         Optional<User> optionalUser = userRepository.findById(userId);
