@@ -35,7 +35,7 @@ public class SecurityConfiguration {
                         .requestMatchers("api/studyrooms/**").permitAll()
                         .requestMatchers("/api/notifications/**").permitAll()
 
-                        .anyRequest().authenticated()
+                                .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
