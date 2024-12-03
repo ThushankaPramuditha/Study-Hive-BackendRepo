@@ -30,7 +30,11 @@ public class SecurityConfiguration {
                         .requestMatchers("api/questions/**").permitAll()
                         .requestMatchers("api/studyrooms/**").permitAll()
                         .requestMatchers("api/statistics/**").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("api/matching/**").permitAll()
+                        .requestMatchers("api/invitations/**").permitAll()
+                        .requestMatchers("/ws-message/**").permitAll()
+//                         .anyRequest().permitAll()
+                       .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -39,4 +43,6 @@ public class SecurityConfiguration {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
+
 }

@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.HashMap;
 import java.util.List;
 
 import java.util.Map;
@@ -45,7 +46,6 @@ public class ProfileController {
     public List<ProfileDTO> findMatchingPartners(@RequestBody ProfileDTO profileDTO) {
         return profileService.findMatchingPartners(profileDTO);
     }
-
 
 //    @PutMapping("/api/profiles/{id}")
 //    public ResponseEntity<?> updateProfile(@PathVariable("userId") Integer userId, @RequestBody Profile updatedProfile) {

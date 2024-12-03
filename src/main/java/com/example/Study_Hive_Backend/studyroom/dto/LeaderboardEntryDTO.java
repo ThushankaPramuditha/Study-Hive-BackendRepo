@@ -3,10 +3,10 @@ package com.example.Study_Hive_Backend.studyroom.dto;
 public class LeaderboardEntryDTO {
     private Integer userId;
     private String username;
-    private Long totalHours;
+    private Double totalHours;
     private Integer rank;
 
-    public LeaderboardEntryDTO(Integer userId, String username, Long totalHours, Integer rank) {
+    public LeaderboardEntryDTO(Integer userId, String username, Double totalHours, Integer rank) {
         this.userId = userId;
         this.username = username;
         this.totalHours = totalHours;
@@ -30,12 +30,12 @@ public class LeaderboardEntryDTO {
         this.username = username;
     }
 
-    public Long getTotalHours() {
+    public Double getTotalHours() {
         return totalHours;
     }
 
     public void setTotalHours(Long totalHours) {
-        this.totalHours = totalHours;
+        this.totalHours = Double.valueOf(totalHours);
     }
 
     public Integer getRank() {
