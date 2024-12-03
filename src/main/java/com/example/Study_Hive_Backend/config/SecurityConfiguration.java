@@ -32,7 +32,7 @@ public class SecurityConfiguration {
                         .requestMatchers("api/statistics/**").permitAll()
                         .requestMatchers("api/matching/**").permitAll()
                         .requestMatchers("api/invitations/**").permitAll()
-                        .requestMatchers("/ws-message/**").permitAll()
+                        .requestMatchers("/ws/**").permitAll()
 //                         .anyRequest().permitAll()
                        .anyRequest().authenticated()
                 )
