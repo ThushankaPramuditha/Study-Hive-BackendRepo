@@ -9,13 +9,9 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "com_user")
+@Table(name = "community_user")
 public class ComUserEntity {
     @Id
     private String user_id;
-    private String user_pw;
     private String user_name;
-    private String user_email;
-    private String user_phone;
-    private String user_birth;
 }
