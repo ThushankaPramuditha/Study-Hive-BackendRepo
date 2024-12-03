@@ -18,4 +18,14 @@ public class StudyRoomService {
     public Optional<StudyRoomEntity> getStudyRoom(Long id) {
         return studyRoomRepository.findById(id);
     }
+
+    public boolean deleteStudyRoom(Long id) {
+        // Check if the study room exists
+        if (studyRoomRepository.existsById(id)) {
+            studyRoomRepository.deleteById(id);
+            return true;
+        } else {
+            return false; // Study room not found
+        }
+    }
 }

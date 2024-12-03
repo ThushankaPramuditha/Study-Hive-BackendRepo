@@ -4,9 +4,9 @@ spring:
     name: Study-Hive
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/studyhivedb
+    url: jdbc:postgresql://localhost:5433/studyhivedb
     username: postgres
-    password: 12345678
+    password: 1234
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -19,5 +19,5 @@ spring:
 
 # Server port
 server:
-  port: 8090
+  port: 8080
 
