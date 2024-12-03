@@ -50,41 +50,55 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
-        var user = repository.findByEmail(request.getEmail())
-                .orElseThrow();
+        // Attempt to authenticate
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()
+                    )
+            );
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
+        }
 
-        boolean profileExists = ProfileRepository.findByUserId(user.getId()).isPresent();
+        // Fetch the user details from the database
+        var user = repository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
         if (user.getBlocked()) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Your account is blocked. Please contact support.");
+            throw new ResponseStatusException(HttpStatus.LOCKED, "Your account is blocked. Please contact support.");
         }
-        // Update status to ACTIVE
-        user.setStatus(Status.ACTIVE);
-        repository.save(user);
 
+        // Check if the user profile exists
+        boolean profileExists = ProfileRepository.findByUserId(user.getId()).isPresent();
+
+        // Update user status to ACTIVE if they are not already active
+        if (user.getStatus() != Status.ACTIVE) {
+            user.setStatus(Status.ACTIVE);
+            repository.save(user);
+        }
+
+        // Generate JWT token
         var jwtToken = jwtService.generateToken(user);
+
+        // Build and return the response
         return AuthenticationResponse.builder()
                 .token(jwtToken)
-                .userId(user.getId())  // Include user ID in the response
+                .userId(user.getId())
                 .profileExists(profileExists)
                 .build();
     }
 
+    /**
+     * Logs out a user by setting their status to INACTIVE.
+     */
     public void logout(String email) {
         var user = repository.findByEmail(email)
-                .orElseThrow();
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
-        // Update status to INACTIVE
         user.setStatus(Status.INACTIVE);
         repository.save(user);
-
-
     }
 
 

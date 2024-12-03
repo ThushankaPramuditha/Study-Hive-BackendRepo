@@ -53,6 +53,7 @@ public class SecurityConfiguration {
                                 .requestMatchers("/api/questions/**").permitAll()
                                 .requestMatchers("/api/studyrooms/**").permitAll()
                                 .requestMatchers("/api/v1/users/**").permitAll()
+                                .requestMatchers("/api/communities/**").permitAll()
 
 
 
