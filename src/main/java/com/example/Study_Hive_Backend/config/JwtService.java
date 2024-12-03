@@ -135,7 +135,6 @@ public class JwtService {
     }
 
 
-
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
@@ -160,6 +159,11 @@ public class JwtService {
         String firstname = extractClaim(token, claims -> claims.get("firstname", String.class));
         String lastname = extractClaim(token, claims -> claims.get("lastname", String.class));
         return firstname + " " + lastname;
+    }
+
+    public Integer extractUserId(String token) {
+        System.out.println("Extracted user id: " + extractUserId(token));
+        return extractClaim(token, claims -> claims.get("userId", Integer.class));
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
