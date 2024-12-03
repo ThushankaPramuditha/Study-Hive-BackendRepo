@@ -126,7 +126,7 @@ public class User implements UserDetails {
     private Boolean blocked = false;
 
     @Column(name = "block_count", nullable = false)
-    private Integer blockCount = 0;
+    private int blockCount = 0;
 
 
     @PrePersist

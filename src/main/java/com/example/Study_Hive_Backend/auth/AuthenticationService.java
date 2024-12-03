@@ -41,6 +41,7 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .status(Status.INACTIVE) // Initially, the user is inactive
+                .blocked(false)
                 .build();
         repository.save(user);
         var jwtToken = jwtService.generateToken(user);
