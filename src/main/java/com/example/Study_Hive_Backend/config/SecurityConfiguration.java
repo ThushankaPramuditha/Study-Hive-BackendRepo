@@ -44,6 +44,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/v1/users/**").permitAll()
                         .requestMatchers("/api/reports/7days").permitAll()
                         .requestMatchers("/api/admin/dashboard-stats").permitAll()
+                        .requestMatchers("/api/communities/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/inquiries/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/inquiries/all").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/api/inquiries/*/reply").permitAll() // Use wildcard to catch any inquiryId
