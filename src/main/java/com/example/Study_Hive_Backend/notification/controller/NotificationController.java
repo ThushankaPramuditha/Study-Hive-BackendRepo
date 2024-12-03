@@ -32,9 +32,22 @@ public ResponseEntity<Notification> createNotification(@RequestBody Notification
 }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Notification>> getNotificationsByUserId(@PathVariable Long userId) {
-        return ResponseEntity.ok(notificationService.getNotificationsByUserId(userId));
+    public ResponseEntity<List<Notification>> getNotificationsByUserIdAndStatus(
+            @PathVariable Long userId,
+            @RequestParam String status) {
+        List<Notification> notifications = notificationService.getNotificationsByUserIdAndStatus(userId, status);
+
+        if (notifications.isEmpty()) {
+            return ResponseEntity.noContent().build(); // Return 204 if no notifications are found
+        } else {
+            return ResponseEntity.ok(notifications); // Return 200 with the notifications
+        }
     }
+
+//    @GetMapping("/user/{userId}")
+//    public ResponseEntity<List<Notification>> getNotificationsByUserId(@PathVariable Long userId) {
+//        return ResponseEntity.ok(notificationService.getNotificationsByUserId(userId));
+//    }
 
 //    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 //    @PutMapping("/{id}/status")
@@ -59,7 +72,6 @@ public ResponseEntity<Notification> createNotification(@RequestBody Notification
             return ResponseEntity.badRequest().build();
         }
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteNotification(@PathVariable Long id) {

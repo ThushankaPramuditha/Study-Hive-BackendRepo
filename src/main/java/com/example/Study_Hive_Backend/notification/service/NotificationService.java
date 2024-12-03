@@ -30,6 +30,12 @@ public class NotificationService {
         return notificationRepository.save(notification);
     }
 
+    public List<Notification> getNotificationsByUserIdAndStatus(Long userId, String status) {
+        // Assuming the repository has a method to find notifications by userId and status
+        return notificationRepository.findByUserIdAndStatus(userId, status);
+    }
+
+
     public void deleteNotification(Long id) {
         notificationRepository.deleteById(id);
     }

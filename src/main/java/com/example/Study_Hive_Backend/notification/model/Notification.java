@@ -52,6 +52,9 @@ public class Notification {
     @Column(name = "status", nullable = false)
     private String status;
 
+    @Column(name = "type", nullable = false)
+    private String type;
+
     // Add a default value for detailId
     public Notification() {
         this.detailId = 0L; // Set a default value
