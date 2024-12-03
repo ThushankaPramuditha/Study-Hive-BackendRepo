@@ -33,8 +33,8 @@ public class SecurityConfiguration {
                         .requestMatchers("api/matching/**").permitAll()
                         .requestMatchers("api/invitations/**").permitAll()
                         .requestMatchers("/ws/**").permitAll()
-//                         .anyRequest().permitAll()
-                       .anyRequest().authenticated()
+                         .anyRequest().permitAll()
+//                       .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
