@@ -18,3 +18,4 @@ public interface StudyRoomRepository extends JpaRepository<StudyRoomEntity, Long
     long getStudyRoomCountByDateRange(LocalDateTime startDate, LocalDateTime endDate);
 
 }
+
