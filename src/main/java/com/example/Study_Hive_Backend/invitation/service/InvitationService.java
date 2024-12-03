@@ -7,8 +7,7 @@ import com.example.Study_Hive_Backend.invitation.repository.InvitationRepository
 import com.example.Study_Hive_Backend.user.User;
 import com.example.Study_Hive_Backend.studyroom.service.StudyRoomService;
 import com.example.Study_Hive_Backend.user.UserRepository;
-import com.example.Study_Hive_Backend.config.RabbitMQConfig;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import com.example.Study_Hive_Backend.websocket.WebSocketServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,13 +21,13 @@ public class InvitationService {
     private InvitationRepository invitationRepository;
 
     @Autowired
-    private RabbitTemplate rabbitTemplate;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private StudyRoomService studyRoomService;
+
+    @Autowired
+    private WebSocketServer webSocketServer;
 
     @Transactional
     public InvitationResponse sendInvitation(String senderEmail, InvitationRequest request) {
@@ -47,8 +46,8 @@ public class InvitationService {
 
         invitation = invitationRepository.save(invitation);
 
-        sendNotification(receiverUser.getId().longValue(), "You have received a study room invitation");
-        sendInvitationUpdate(receiverUser.getId().longValue(), "SENT", invitation.getId());
+        sendNotification(receiverUser.getId().toString(), "You have received a study room invitation");
+        sendInvitationUpdate(receiverUser.getId().toString(), "SENT", invitation.getId());
 
         return new InvitationResponse(invitation.getId(), invitation.getRoomId(), invitation.getRoomKey());
     }
@@ -75,10 +74,10 @@ public class InvitationService {
         );
 
         sendNotification(
-                invitation.getSender().getUser().getId().longValue(),
+                invitation.getSender().getUser().getId().toString(),
                 "Your study room invitation has been accepted"
         );
-        sendInvitationUpdate(invitation.getSender().getUser().getId().longValue(), "ACCEPTED", invitation.getId());
+        sendInvitationUpdate(invitation.getSender().getUser().getId().toString(), "ACCEPTED", invitation.getId());
 
         return new InvitationResponse(invitation.getId(), invitation.getRoomId(), invitation.getRoomKey());
     }
@@ -98,21 +97,19 @@ public class InvitationService {
         invitationRepository.save(invitation);
 
         sendNotification(
-                invitation.getSender().getUser().getId().longValue(),
+                invitation.getSender().getUser().getId().toString(),
                 "Your study room invitation has been declined"
         );
-        sendInvitationUpdate(invitation.getSender().getUser().getId().longValue(), "DECLINED", invitation.getId());
+        sendInvitationUpdate(invitation.getSender().getUser().getId().toString(), "DECLINED", invitation.getId());
     }
 
-    private void sendNotification(Long userId, String message) {
-        String routingKey = "user." + userId + ".notifications";
-//        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE, routingKey, message);
+    private void sendNotification(String userId, String message) {
+        webSocketServer.sendNotification(userId, message);
     }
 
-    private void sendInvitationUpdate(Long userId, String status, Long invitationId) {
-        String routingKey = "user." + userId + ".invitations";
+    private void sendInvitationUpdate(String userId, String status, Long invitationId) {
         String message = status + ":" + invitationId;
-//        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE, routingKey, message);
+        webSocketServer.sendNotification(userId, message);
     }
 }
 
