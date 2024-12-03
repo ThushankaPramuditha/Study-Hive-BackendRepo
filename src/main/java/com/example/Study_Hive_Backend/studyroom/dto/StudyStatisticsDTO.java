@@ -4,18 +4,18 @@ import java.util.List;
 import java.util.Map;
 
 public class StudyStatisticsDTO {
-    private Long totalStudyHours;
+    private Double totalStudyHours;
     private Double averageStudyHours;
     private Integer rank;
     private Map<String, Long> dailyStudyHours;
     private List<BadgeDTO> badges;
 
     // Getters and setters
-    public Long getTotalStudyHours() {
+    public Double getTotalStudyHours() {
         return totalStudyHours;
     }
 
-    public void setTotalStudyHours(Long totalStudyHours) {
+    public void setTotalStudyHours(Double totalStudyHours) {
         this.totalStudyHours = totalStudyHours;
     }
 

@@ -29,5 +29,7 @@ public interface UserRoomTimeRepository extends JpaRepository<UserRoomTime, Long
 
     @Query("SELECT DISTINCT u.userId FROM UserRoomTime u")
     List<Integer> findAllDistinctUserIds();
+
+
 }
 
