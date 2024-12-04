@@ -43,10 +43,12 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setUniversity(profileDTO.getUniversity());
 //        profile.setProfilePhotoUrl(profileDTO.getProfilePhotoUrl());
 
-        if (profile.getProfilePhotoUrl() != null && profile.getProfilePhotoUrl().length() > 2048) {
-//            logger.warn("Profile photo URL exceeds maximum length, truncating.");
-            profile.setProfilePhotoUrl(profile.getProfilePhotoUrl().substring(0, 2048));
+        if (profileDTO.getProfilePhotoUrl() != null && profileDTO.getProfilePhotoUrl().length() > 2048) {
+            profile.setProfilePhotoUrl(profileDTO.getProfilePhotoUrl().substring(0, 2048));
+        } else {
+            profile.setProfilePhotoUrl(profileDTO.getProfilePhotoUrl());
         }
+
 
         profile.setUser(loggedInUser);
 
@@ -195,6 +197,17 @@ public class ProfileServiceImpl implements ProfileService {
         profileDTO.setProfilePhotoUrl(profile.getProfilePhotoUrl());
 
         return profileDTO;
+    }
+
+
+    @Override
+    public ProfileDTO getProfileByUserId(Integer userId) {
+        // Fetch the profile by user ID
+        Profile profile = profileRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Profile not found for user ID: " + userId));
+
+        // Convert the Profile entity to a DTO
+        return new ProfileDTO(profile);
     }
 
 
