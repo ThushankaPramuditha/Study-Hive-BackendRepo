@@ -139,13 +139,6 @@ public class CommentService {
     @Autowired
     private UserRepository userRepository;
 
-    /**
-     * Adds a comment to a specific question.
-     *
-     * @param questionId      ID of the question to which the comment is being added
-     * @param commentRequest  Data transfer object containing comment details
-     * @return CommentResponse containing details of the added comment
-     */
     public CommentResponse addCommentToQuestion(Long questionId, CommentRequest commentRequest) {
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new RuntimeException("Question not found"));
@@ -163,34 +156,20 @@ public class CommentService {
         return mapToResponse(savedComment);
     }
 
-    /**
-     * Retrieves a user's full name from their email.
-     *
-     * @param email User's email address
-     * @return Full name of the user, or "Unknown User" if not found
-     */
     private String getUserFullNameFromEmail(String email) {
         return userRepository.findByEmail(email)
                 .map(user -> user.getFirstname() + " " + user.getLastname())
                 .orElse("Unknown User");
     }
 
-    /**
-     * Retrieves all comments for a specific question.
-     *
-     * @param questionId ID of the question
-     * @return List of CommentResponse objects for the question
-     */
+
+
     public List<CommentResponse> getCommentsForQuestion(Long questionId) {
         List<Comment> comments = commentRepository.findByQuestionId(questionId);
         return comments.stream().map(this::mapToResponse).collect(Collectors.toList());
     }
 
-    /**
-     * Increments the upvote count of a comment.
-     *
-     * @param commentId ID of the comment to upvote
-     */
+
     public Comment upvoteComment(Long commentId) {
         Comment comment = findCommentById(commentId);
         comment.setUpvote(comment.getUpvote() + 1);
@@ -203,12 +182,6 @@ public class CommentService {
         return commentRepository.save(comment); // Return the updated comment
     }
 
-
-    /**
-     * Resets the upvote and downvote counts of a comment.
-     *
-     * @param commentId ID of the comment whose votes are to be reset
-     */
     public void resetVotes(Long commentId) {
         Comment comment = findCommentById(commentId);
         comment.setUpvote(0);
@@ -216,12 +189,7 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
-    /**
-     * Utility method to map a Comment entity to a CommentResponse DTO.
-     *
-     * @param comment Comment entity to map
-     * @return CommentResponse DTO
-     */
+
     private CommentResponse mapToResponse(Comment comment) {
         return new CommentResponse(
                 comment.getId(),
@@ -233,12 +201,6 @@ public class CommentService {
         );
     }
 
-    /**
-     * Finds a comment by its ID, throwing an exception if not found.
-     *
-     * @param commentId ID of the comment to find
-     * @return Found Comment entity
-     */
     private Comment findCommentById(Long commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new RuntimeException("Comment not found"));

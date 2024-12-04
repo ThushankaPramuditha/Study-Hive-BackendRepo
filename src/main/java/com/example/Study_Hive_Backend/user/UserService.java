@@ -33,6 +33,10 @@ public class UserService {
     }
 
 
+    public Object getAllUsers() {
+        return userRepository.findAll();
+    }
+
     public void deleteUserById(Integer userId) {
         if (!userRepository.existsById(userId)) {
             throw new RuntimeException("User not found with id: " + userId);

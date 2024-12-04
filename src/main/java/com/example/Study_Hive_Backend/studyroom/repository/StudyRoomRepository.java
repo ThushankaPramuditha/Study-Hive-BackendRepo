@@ -8,7 +8,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import java.util.List;
+
 public interface StudyRoomRepository extends JpaRepository<StudyRoomEntity, Long> {
+
+    List<StudyRoomEntity> findByOwnerId(Integer ownerId);
+
     @Query("SELECT COUNT(s) FROM StudyRoomEntity s")
     Long countStudyRooms();
 

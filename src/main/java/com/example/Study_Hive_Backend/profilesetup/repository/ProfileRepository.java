@@ -11,9 +11,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+
 import java.util.Optional;
 
-
+@Repository
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
     Optional<Profile> findByUserId(Integer userId);
     Optional<User> findByEmail(String email);
@@ -24,6 +25,7 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
     @Transactional
     @Query("DELETE FROM Profile p WHERE p.user.id = :userId")
     void deleteByUserId(@Param("userId") Integer userId);
+
 
 
 }

@@ -26,6 +26,7 @@ public class StudyRoomParticipantEntity {
 
     public enum ParticipantStatus {
         PENDING,
-        ACCEPTED
+        ACCEPTED,
+        DECLINED
     }
 }

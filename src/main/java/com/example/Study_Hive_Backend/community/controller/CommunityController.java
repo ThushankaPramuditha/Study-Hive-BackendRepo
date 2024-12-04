@@ -1,4 +1,3 @@
-
 package com.example.Study_Hive_Backend.community.controller;
 
 import com.example.Study_Hive_Backend.community.dto.CommunityDTO;

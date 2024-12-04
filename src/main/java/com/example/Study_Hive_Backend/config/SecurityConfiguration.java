@@ -4,7 +4,6 @@ import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,11 +27,14 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
 
                         .requestMatchers("/api/v1/auth/**").permitAll()
-
-                        .requestMatchers("/api/questions/**").permitAll()
                         .requestMatchers("/api/profiles/**").authenticated()
-//                         .requestMatchers("api/questions/**").permitAll()
+                        .requestMatchers("api/questions/**").permitAll()
                         .requestMatchers("api/studyrooms/**").permitAll()
+                        .requestMatchers("api/statistics/**").permitAll()
+                        .requestMatchers("api/matching/**").permitAll()
+                        .requestMatchers("api/invitations/**").permitAll()
+                        .requestMatchers("/ws/**").permitAll()
+                         .anyRequest().permitAll()
                         .requestMatchers("/api/notifications/**").permitAll()
 
                         // Allow access to GET /api/profiles/{userId} without authentication
@@ -66,4 +68,6 @@ public class SecurityConfiguration {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
+
 }

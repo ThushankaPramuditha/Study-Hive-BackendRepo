@@ -38,6 +38,12 @@ public class UserController {
         return ResponseEntity.ok(Map.of("isValid", true, "isRegistered", isRegistered));
     }
 
+    //get all users
+    @GetMapping
+    public ResponseEntity<Iterable<User>> getAllUsers() {
+        return ResponseEntity.ok((Iterable<User>) userService.getAllUsers());
+    }
+
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userRepository.findAll();
