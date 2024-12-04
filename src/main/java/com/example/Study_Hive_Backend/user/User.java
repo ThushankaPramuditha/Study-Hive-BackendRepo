@@ -100,6 +100,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue
     private Integer id;
+
     private String firstname;
     private String lastname;
     @Column(nullable = false, unique = true)
@@ -111,6 +112,19 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Status status; // New status field
+
+    @Column(name = "blocked", nullable = false)
+    private Boolean blocked = false;
+
+    @Column(name = "block_count", nullable = false)
+    private int blockCount = 0;
+
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdDate = LocalDateTime.now();
+        System.out.println("Setting createdDate to: " + createdDate);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -147,11 +161,14 @@ public class User implements UserDetails {
         return UserDetails.super.isEnabled();
     }
 
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Profile profile;
+    public String firstname() {
+        return firstname;
+    }
 
-
-//    public String firstnameAndlastname() {
-//        return firstname +' ' + lastname;
-//    }
+    public String lastname() {
+        return lastname;
+    }
 }

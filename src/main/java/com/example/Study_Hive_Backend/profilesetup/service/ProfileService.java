@@ -32,6 +32,7 @@ public interface ProfileService {
     ProfileDTO getProfileOfLoggedInUser();
     ProfileDTO updateProfile(String loggedInEmail, ProfileDTO profileDTO);
     ProfileDTO getProfileByEmail(String email);
+    ProfileDTO getProfileByUserId(Integer userId);
     List<ProfileDTO> findMatchingPartners(ProfileDTO profileDTO);
 
 }
