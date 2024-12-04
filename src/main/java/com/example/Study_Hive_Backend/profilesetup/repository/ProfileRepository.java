@@ -25,5 +25,4 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
     @Query("DELETE FROM Profile p WHERE p.user.id = :userId")
     void deleteByUserId(@Param("userId") Integer userId);
 
-
 }

@@ -1,7 +1,5 @@
 package com.example.Study_Hive_Backend.community.dto;
 
-
-
 public class CommunityDTO {
 
     private String name;
@@ -33,6 +31,7 @@ public class CommunityDTO {
     public void setCreated(String created) {
         this.created = created;
     }
+
     public Integer getMemberCount() {
         return memberCount;
     }
@@ -41,3 +40,4 @@ public class CommunityDTO {
         this.memberCount = memberCount;
     }
 }
+

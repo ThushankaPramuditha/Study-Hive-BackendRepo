@@ -48,7 +48,6 @@ public class UserController {
         try {
             // Delete the user from the _user table
             userService.deleteUserById(userId);
-
             userService.deleteProfileByUserId(userId);
             return ResponseEntity.ok("User deleted successfully");
         } catch (RuntimeException e) {
@@ -86,6 +85,4 @@ public class UserController {
 
         return ResponseEntity.ok(optionalUser.get().getBlockCount());
     }
-
-
 }

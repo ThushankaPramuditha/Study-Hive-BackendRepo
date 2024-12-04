@@ -13,4 +13,8 @@ import lombok.NoArgsConstructor;
 public class AuthenticationResponse {
 
     private String token;
+    private Integer userId;  // Include userId
+    private String userFname;
+    private String userLname;
+    private boolean profileExists;
 }

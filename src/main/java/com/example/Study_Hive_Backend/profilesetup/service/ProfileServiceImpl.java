@@ -210,7 +210,6 @@ public class ProfileServiceImpl implements ProfileService {
         return new ProfileDTO(profile);
     }
 
-
 }
 
 

@@ -1,6 +1,5 @@
 package com.example.Study_Hive_Backend.inquiry.dto;
 
-
 import com.example.Study_Hive_Backend.inquiry.entity.Inquiry;
 import com.example.Study_Hive_Backend.user.User;
 import lombok.Data;
@@ -57,3 +56,4 @@ public class InquiryDTO {
 
     }
 }
+

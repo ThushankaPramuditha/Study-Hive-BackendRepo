@@ -119,21 +119,21 @@ public class InquiryController {
     }
 
     // Endpoint to reply to an inquiry
-        @PostMapping("/{id}/reply")
-        public ResponseEntity<?> replyToInquiry(@PathVariable Long id, @RequestBody Map<String, String> requestBody) {
-            String adminReply = requestBody.get("adminReply");
+    @PostMapping("/{id}/reply")
+    public ResponseEntity<?> replyToInquiry(@PathVariable Long id, @RequestBody Map<String, String> requestBody) {
+        String adminReply = requestBody.get("adminReply");
 
-            // Get the inquiry and set the adminReply as a plain string
-            Optional<Inquiry> inquiryOptional = inquiryService.getInquiryById(id);  // Use service method to get the inquiry
-            if (inquiryOptional.isPresent()) {
-                Inquiry inquiry = inquiryOptional.get();
-                inquiry.setAdminReply(adminReply); // Set the reply as a plain string
-                inquiry.setRepliedAt(LocalDateTime.now());
-                inquiryService.save(inquiry);  // Save updated inquiry
-                return ResponseEntity.ok(inquiry);
-            }
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Inquiry not found");
+        // Get the inquiry and set the adminReply as a plain string
+        Optional<Inquiry> inquiryOptional = inquiryService.getInquiryById(id);  // Use service method to get the inquiry
+        if (inquiryOptional.isPresent()) {
+            Inquiry inquiry = inquiryOptional.get();
+            inquiry.setAdminReply(adminReply); // Set the reply as a plain string
+            inquiry.setRepliedAt(LocalDateTime.now());
+            inquiryService.save(inquiry);  // Save updated inquiry
+            return ResponseEntity.ok(inquiry);
         }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Inquiry not found");
+    }
 
 
     @DeleteMapping("/{id}/reply")

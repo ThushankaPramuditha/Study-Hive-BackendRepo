@@ -1,8 +1,5 @@
 package com.example.Study_Hive_Backend.community.entity;
 
-
-
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,7 +15,8 @@ public class Community {
     private String name;
     private String description;
     private String created;
-    private Integer memberCount;
+
+    private Integer memberCount; // New field for member count
 
     // Getters and Setters
     public Long getId() {
@@ -61,3 +59,4 @@ public class Community {
         this.memberCount = memberCount;
     }
 }
+
