@@ -181,8 +181,10 @@ public class AuthenticationService {
     }
 
 
+
     public User getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
 
         if (principal instanceof UserDetails) {
             // Extract email from the UserDetails object
@@ -195,6 +197,7 @@ public class AuthenticationService {
             // If user is present, return the user, else return null or handle the case accordingly
             return userOptional.orElseThrow(() -> new RuntimeException("User not found with email: " + email));
         }
+
 
         throw new RuntimeException("Authentication error: no principal found");
     }
@@ -217,4 +220,22 @@ public class AuthenticationService {
 
     //     throw new RuntimeException("Authentication error: no principal found");
     // }
+
+    public User getCurrentUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            // Extract email from the UserDetails object
+            UserDetails userDetails = (UserDetails) principal;
+            String email = userDetails.getUsername();  // In Spring Security, the username is typically the email
+
+            // Retrieve user by email from the database (handles Optional)
+            Optional<User> userOptional = userRepository.findByEmail(email);
+
+            // If user is present, return the user, else return null or handle the case accordingly
+            return userOptional.orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+        }
+
+        throw new RuntimeException("Authentication error: no principal found");
+    }
 }

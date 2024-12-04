@@ -1,9 +1,10 @@
+# Application name
 spring:
   application:
     name: Study-Hive
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/studyhivedb
+    url: jdbc:postgresql://localhost:5433/studyhivedb
     username: postgres
     password: 1234
     driver-class-name: org.postgresql.Driver
@@ -16,12 +17,7 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
-
+# Server port
 server:
-  address: 0.0.0.0
-  port: 8090
+  port: 8080
+

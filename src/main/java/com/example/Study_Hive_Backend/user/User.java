@@ -86,6 +86,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -106,6 +108,14 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
     private String password;
+
+    @Column(name = "created_date", updatable = false)
+    private LocalDateTime createdDate;
+
+
+
+
+
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -172,3 +182,32 @@ public class User implements UserDetails {
         return lastname;
     }
 }
+
+
+    public Boolean getBlocked() {
+        return blocked;
+    }
+
+
+
+    public Integer getBlockCount() {
+        return blockCount;
+    }
+
+    public void setBlockCount(Integer blockCount) {
+        this.blockCount = blockCount;
+    }
+
+    public void setBlocked(Boolean blocked) {
+        if (!this.blocked && blocked) { // Increment only if changing from unblocked to blocked
+            this.blockCount++;
+        }
+        this.blocked = blocked;
+    }
+
+
+//    public String firstnameAndlastname() {
+//        return firstname +' ' + lastname;
+//    }
+}
+

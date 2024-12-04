@@ -1,6 +1,5 @@
 package com.example.Study_Hive_Backend.inquiry.controller;
 
-
 import com.example.Study_Hive_Backend.auth.AuthenticationService;
 import com.example.Study_Hive_Backend.inquiry.dto.InquiryDTO;
 import com.example.Study_Hive_Backend.inquiry.entity.Inquiry;
@@ -160,4 +159,3 @@ public class InquiryController {
 
 
 }
-

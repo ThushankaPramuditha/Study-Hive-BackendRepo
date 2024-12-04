@@ -1,6 +1,5 @@
 package com.example.Study_Hive_Backend.community.entity;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -60,3 +59,4 @@ public class Community {
         this.memberCount = memberCount;
     }
 }
+

@@ -33,6 +33,7 @@ public class UserService {
     }
 
 
+
     public Object getAllUsers() {
         return userRepository.findAll();
     }
@@ -50,5 +51,6 @@ public class UserService {
             profileRepository.deleteByUserId(userId);
         }
     }
+
 
 }
