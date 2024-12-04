@@ -99,7 +99,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -196,27 +195,15 @@ public class StudyRoomController {
     public List<StudyRoomEntity> getStudyRoomsByUserId(@PathVariable Integer userId) {
         return studyRoomService.getStudyRoomsByUserId(userId);
     }
-//    @GetMapping("/{roomId}/accepted-users")
-//    public ResponseEntity<?> getAcceptedUsers(@PathVariable Long roomId) {
-//        try {
-//            List<StudyRoomParticipantEntity> acceptedUsers = studyRoomService.getAcceptedUsers(roomId);
-//            return new ResponseEntity<>(acceptedUsers, HttpStatus.OK);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>("Error retrieving accepted users: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-@GetMapping("/{roomId}/accepted-users")
-public ResponseEntity<?> getAcceptedUsers(@PathVariable Long roomId, @RequestHeader("Authorization") String authHeader) {
-    try {
-        // Extract the JWT token from the Authorization header
-        String token = authHeader.substring(7); // Remove "Bearer " prefix
-        // Call the updated service method with roomId and token
-        List<Map<String, Object>> acceptedUsers = studyRoomService.getAcceptedUsers(roomId, token);
-        return new ResponseEntity<>(acceptedUsers, HttpStatus.OK);
-    } catch (Exception e) {
-        return new ResponseEntity<>("Error retrieving accepted users: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    @GetMapping("/{roomId}/accepted-users")
+    public ResponseEntity<?> getAcceptedUsers(@PathVariable Long roomId) {
+        try {
+            List<StudyRoomParticipantEntity> acceptedUsers = studyRoomService.getAcceptedUsers(roomId);
+            return new ResponseEntity<>(acceptedUsers, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error retrieving accepted users: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-}
 
     @PostMapping("/{roomId}/leave")
     public ResponseEntity<?> leaveRoom(@PathVariable Long roomId, @RequestParam Integer userId, @RequestParam Long timeSpent) {
