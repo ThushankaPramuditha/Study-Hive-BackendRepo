@@ -18,3 +18,4 @@ public class AuthenticationResponse {
     private String userLname;
     private boolean profileExists;
 }
+

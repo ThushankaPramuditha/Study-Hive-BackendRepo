@@ -86,6 +86,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -106,6 +107,9 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
     private String password;
+
+    @Column(name = "created_date", updatable = false)
+    private LocalDateTime createdDate;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -148,11 +152,18 @@ public class User implements UserDetails {
         return UserDetails.super.isEnabled();
     }
 
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Profile profile;
     public String firstname() {
         return firstname;
     }
+    
+
+   public String firstnameAndlastname() {
+       return firstname +' ' + lastname;
+   }
+
 
     public String lastname() {
         return lastname;
