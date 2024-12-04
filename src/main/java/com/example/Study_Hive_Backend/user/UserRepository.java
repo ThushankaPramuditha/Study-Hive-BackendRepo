@@ -34,9 +34,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     long countByCreatedDate(LocalDateTime createdDate);
 
-    @Query("SELECT COUNT(u) FROM User u WHERE u.createdDate BETWEEN :start AND :end")
-    long countByCreatedDateBetween(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
-
     @Query("SELECT COUNT(u) FROM User u WHERE u.createdDate BETWEEN :startDate AND :endDate")
     long getUserCountByDateRange(LocalDateTime startDate, LocalDateTime endDate);
 
