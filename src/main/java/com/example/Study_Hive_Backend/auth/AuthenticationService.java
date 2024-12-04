@@ -116,6 +116,7 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .status(Status.INACTIVE) // Initially, the user is inactive
+                .blocked(false)
                 .build();
         repository.save(user);
         var jwtToken = jwtService.generateToken(user);
@@ -125,22 +126,39 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
-        var user = repository.findByEmail(request.getEmail())
-                .orElseThrow();
+        // Attempt to authenticate
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()
+                    )
+            );
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
+        }
 
+        // Fetch the user details from the database
+        var user = repository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        if (user.getBlocked()) {
+            throw new ResponseStatusException(HttpStatus.LOCKED, "Your account is blocked. Please contact support.");
+        }
+
+        // Check if the user profile exists
         boolean profileExists = ProfileRepository.findByUserId(user.getId()).isPresent();
-      
-        // Update status to ACTIVE
-        user.setStatus(Status.ACTIVE);
-        repository.save(user);
-      
+
+        // Update user status to ACTIVE if they are not already active
+        if (user.getStatus() != Status.ACTIVE) {
+            user.setStatus(Status.ACTIVE);
+            repository.save(user);
+        }
+
+        // Generate JWT token
         var jwtToken = jwtService.generateToken(user);
+
+        // Build and return the response
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .userId(user.getId())// Include user ID in the response
@@ -151,15 +169,15 @@ public class AuthenticationService {
                 
     }
 
+    /**
+     * Logs out a user by setting their status to INACTIVE.
+     */
     public void logout(String email) {
         var user = repository.findByEmail(email)
-                .orElseThrow();
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
-        // Update status to INACTIVE
         user.setStatus(Status.INACTIVE);
         repository.save(user);
-
-
     }
 
 
@@ -180,5 +198,23 @@ public class AuthenticationService {
 
         throw new RuntimeException("Authentication error: no principal found");
     }
-}
 
+
+    // public User getCurrentUser() {
+    //     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+    //     if (principal instanceof UserDetails) {
+    //         // Extract email from the UserDetails object
+    //         UserDetails userDetails = (UserDetails) principal;
+    //         String email = userDetails.getUsername();  // In Spring Security, the username is typically the email
+
+    //         // Retrieve user by email from the database (handles Optional)
+    //         Optional<User> userOptional = userRepository.findByEmail(email);
+
+    //         // If user is present, return the user, else return null or handle the case accordingly
+    //         return userOptional.orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+    //     }
+
+    //     throw new RuntimeException("Authentication error: no principal found");
+    // }
+}

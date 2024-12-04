@@ -14,4 +14,7 @@ public interface ProfileService {
    // Profile updateProfile(Long id, Profile updatedProfile);
 //   Profile updateProfile(Integer userId, Profile updatedProfile);
    ProfileDTO updateProfile(String loggedInEmail, ProfileDTO profileDTO);
+    ProfileDTO getProfileByUserId(Integer userId);
+
+
 }

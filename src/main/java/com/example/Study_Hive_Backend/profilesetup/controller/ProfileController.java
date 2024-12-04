@@ -72,7 +72,11 @@ public class ProfileController {
         return ResponseEntity.ok(exists);
     }
 
-
+    @GetMapping("/{userId}")
+    public ResponseEntity<ProfileDTO> getProfileByUserId(@PathVariable Integer userId) {
+        ProfileDTO profileDTO = profileService.getProfileByUserId(userId);
+        return ResponseEntity.ok(profileDTO);
+    }
 
 
 

@@ -86,7 +86,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -108,14 +107,24 @@ public class User implements UserDetails {
     private String email;
     private String password;
 
-    @Column(name = "created_date", updatable = false)
-    private LocalDateTime createdDate;
-
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @Enumerated(EnumType.STRING)
     private Status status; // New status field
+
+    @Column(name = "blocked", nullable = false)
+    private Boolean blocked = false;
+
+    @Column(name = "block_count", nullable = false)
+    private int blockCount = 0;
+
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdDate = LocalDateTime.now();
+        System.out.println("Setting createdDate to: " + createdDate);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -158,12 +167,6 @@ public class User implements UserDetails {
     public String firstname() {
         return firstname;
     }
-    
-
-   public String firstnameAndlastname() {
-       return firstname +' ' + lastname;
-   }
-
 
     public String lastname() {
         return lastname;
