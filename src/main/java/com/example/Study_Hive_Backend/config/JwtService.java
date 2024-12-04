@@ -162,6 +162,11 @@ public class JwtService {
         return firstname + " " + lastname;
     }
 
+    public Integer extractUserId(String token) {
+        System.out.println("Extracted user id: " + extractUserId(token));
+        return extractClaim(token, claims -> claims.get("userId", Integer.class));
+    }
+
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return Jwts.builder()
                 .setClaims(extraClaims)

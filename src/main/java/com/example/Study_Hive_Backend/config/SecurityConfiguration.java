@@ -48,13 +48,14 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.POST, "/api/profiles/**").authenticated()
                                 .requestMatchers(HttpMethod.PUT, "/api/profiles/**").authenticated()
                                 .requestMatchers(HttpMethod.DELETE, "/api/profiles/**").authenticated()
+                                       .requestMatchers("/api/profiles/**").authenticated()
 
                                 // Allow access to other routes
                                 .requestMatchers("/api/questions/**").permitAll()
                                 .requestMatchers("/api/studyrooms/**").permitAll()
                                 .requestMatchers("/api/v1/users/**").permitAll()
                                 .requestMatchers("/api/communities/**").permitAll()
-
+                                       .requestMatchers("/api/notifications/**").permitAll()
 
 
                                 .anyRequest().authenticated()

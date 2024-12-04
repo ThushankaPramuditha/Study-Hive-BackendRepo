@@ -102,6 +102,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue
     private Integer id;
+
     private String firstname;
     private String lastname;
     @Column(nullable = false, unique = true)
@@ -172,7 +173,9 @@ public class User implements UserDetails {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Profile profile;
-
+    public String firstname() {
+        return firstname;
+    }
 
     public Boolean getBlocked() {
         return blocked;
@@ -196,7 +199,11 @@ public class User implements UserDetails {
     }
 
 
-//    public String firstnameAndlastname() {
-//        return firstname +' ' + lastname;
-//    }
+   public String firstnameAndlastname() {
+       return firstname +' ' + lastname;
+   }
+  
+    public String lastname() {
+        return lastname;
+    }
 }
