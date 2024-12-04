@@ -90,6 +90,7 @@
 
 package com.example.Study_Hive_Backend.studyroom.controller;
 
+import com.example.Study_Hive_Backend.studyroom.dto.AcceptedUserDTO;
 import com.example.Study_Hive_Backend.studyroom.entity.StudyRoomEntity;
 import com.example.Study_Hive_Backend.studyroom.entity.StudyRoomParticipantEntity;
 import com.example.Study_Hive_Backend.studyroom.service.StudyRoomService;
@@ -99,6 +100,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -195,10 +197,22 @@ public class StudyRoomController {
     public List<StudyRoomEntity> getStudyRoomsByUserId(@PathVariable Integer userId) {
         return studyRoomService.getStudyRoomsByUserId(userId);
     }
+//    @GetMapping("/{roomId}/accepted-users")
+//    public ResponseEntity<?> getAcceptedUsers(@PathVariable Long roomId) {
+//        try {
+//            List<StudyRoomParticipantEntity> acceptedUsers = studyRoomService.getAcceptedUsers(roomId);
+//            return new ResponseEntity<>(acceptedUsers, HttpStatus.OK);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>("Error retrieving accepted users: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
+
     @GetMapping("/{roomId}/accepted-users")
     public ResponseEntity<?> getAcceptedUsers(@PathVariable Long roomId) {
         try {
-            List<StudyRoomParticipantEntity> acceptedUsers = studyRoomService.getAcceptedUsers(roomId);
+            // Call the existing service method with roomId
+            List<AcceptedUserDTO> acceptedUsers = studyRoomService.getAcceptedUsersWithDetails(roomId);
+
             return new ResponseEntity<>(acceptedUsers, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Error retrieving accepted users: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
